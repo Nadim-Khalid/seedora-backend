@@ -15,6 +15,7 @@ Route::prefix('v1')->group(function ()
     ->group(function()
     {
         Route::get('/vendors' , [AdminVendorController::class, 'pendingVendors']);
+        Route::patch('/vendors/{vendor}/approve', [AdminVendorController::class, 'approvedVendors']);
     });
     
     Route::get('/test', function ()
