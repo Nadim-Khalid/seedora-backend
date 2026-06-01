@@ -1,9 +1,12 @@
 <?php 
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\V1\Admin\CategoryController;
 use App\Http\Controllers\Api\V1\AdminVendorController;
 use App\Http\Controllers\Api\V1\Auth\AuthController;
+use App\Http\Controllers\Api\V1\Cart\CartController;
 use App\Http\Controllers\Api\V1\TestController;
 use App\Http\Controllers\Api\V1\Vendor\ProductController;
+use App\Models\Order;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Testing\Concerns\TestCaches;
 use App\Http\Controllers\Api\V1\Vendor\VendorController;
@@ -36,6 +39,8 @@ Route::prefix('v1')->group(function ()
         Route::put('/products/{product}', [VendorController::class, 'update']);
         Route::delete('/products/{product}', [VendorController::class, 'destroy']);
         Route::post('/products/{product}/images', [ProductController::class, 'uploadImage']);
+        Route::get('/orders', [OrderController::class, 'index']);
+        Route::get('/orders/{id}', [OrderController::class,'show']);
     });
 
     Route::get('/test', function ()
@@ -75,5 +80,28 @@ Route::middleware([
     });
 
 });
+
+
+
+});
+
+Route::prefix('public')->group(function()
+{
+    Route::get('/categories',[CategoryController::class, 'index']);
+    Route::get('/products',[ProductController::class, 'index']);
+    Route::get('/products/{slug}',[ProductController::class,'show']);
+
+
+    Route::middleware('auth:sanctum')->group(function()
+    {
+        Route::post('/cart/add', [CartController::class,'addToCart']);
+        Route::put('/cart/item/{id}',[CartController::class,'updateCartItem']);
+        Route::delete('/cart/item/{id}', [CartController::class, 'removeCartItem']);
+        Route::delete('/cart/clear',[CartController::class, 'clearCart']);
+        Route::post('/checkout', [CartController::class, 'checkout']);
+        Route::get('/orders', [OrderController::class, 'index']);
+        Route::get('/orders/{id}',[OrderController::class, 'show']);
+    });
+
 
 });
