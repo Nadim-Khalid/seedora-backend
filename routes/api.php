@@ -1,9 +1,11 @@
 <?php 
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\V1\Admin\CategoryController;
+use App\Http\Controllers\Api\V1\Admin\DashboardController;
 use App\Http\Controllers\Api\V1\AdminVendorController;
 use App\Http\Controllers\Api\V1\Auth\AuthController;
 use App\Http\Controllers\Api\V1\Cart\CartController;
+use App\Http\Controllers\Api\V1\Public\ProfileController;
 use App\Http\Controllers\Api\V1\TestController;
 use App\Http\Controllers\Api\V1\Vendor\ProductController;
 use App\Models\Order;
@@ -26,6 +28,11 @@ Route::prefix('v1')->group(function ()
         Route::get('/categories/{category}', [CategoryController::class, 'show']);
         Route::put('/categories/{category}', [CategoryController::class, 'update']);
         Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
+        Route::get('/orders', [OrderController::class, 'index']);
+        Route::get('/orders/{id}', [OrderController::class, 'show']);
+        Route::put('/orders/{id}/status', [OrderController::class, 'updateStatus']);
+        Route::get('/dashboard', [DashboardController::class, 'index']);
+
     });
 
     //Vendor routes
@@ -41,6 +48,7 @@ Route::prefix('v1')->group(function ()
         Route::post('/products/{product}/images', [ProductController::class, 'uploadImage']);
         Route::get('/orders', [OrderController::class, 'index']);
         Route::get('/orders/{id}', [OrderController::class,'show']);
+        Route::get('/dashboard', [DashboardController::class, 'index']);
     });
 
     Route::get('/test', function ()
@@ -101,6 +109,10 @@ Route::prefix('public')->group(function()
         Route::post('/checkout', [CartController::class, 'checkout']);
         Route::get('/orders', [OrderController::class, 'index']);
         Route::get('/orders/{id}',[OrderController::class, 'show']);
+        Route::get('/profile',[ProfileController::class, 'profile']);
+        Route::put('/profile',[ProfileController::class, 'updateProfile']);
+        Route::put('/change-password',[ProfileController::class, 'changePassword']);
+        Route::get('/dashboard', [ProfileController::class, 'dashboard']);
     });
 
 
