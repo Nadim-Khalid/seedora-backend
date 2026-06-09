@@ -6,8 +6,10 @@ use App\Http\Controllers\Api\V1\AdminVendorController;
 use App\Http\Controllers\Api\V1\Auth\AuthController;
 use App\Http\Controllers\Api\V1\Cart\CartController;
 use App\Http\Controllers\Api\V1\ProfileController;
+use App\Http\Controllers\Api\V1\ReviewController;
 use App\Http\Controllers\Api\V1\TestController;
 use App\Http\Controllers\Api\V1\Vendor\ProductController;
+use App\Http\Controllers\Api\V1\WishlistController;
 use App\Models\Order;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Testing\Concerns\TestCaches;
@@ -121,6 +123,13 @@ Route::prefix('public')->group(function()
         Route::put('/profile',[ProfileController::class, 'updateProfile']);
         Route::put('/change-password',[ProfileController::class, 'changePassword']);
         Route::get('/dashboard', [ProfileController::class, 'dashboard']);
+        Route::get('/wishlist',[WishlistController::class, 'index']);
+        Route::post('/wishlist', [WishlistController::class, 'store']);
+        Route::delete('/wishlist/{id}', [WishlistController::class, 'destroy']);
+        Route::get('/products/{product}/reviews',[ReviewController::class, 'productReviews']);
+        Route::post('/reviews',[ReviewController::class, 'store']);
+        Route::put('/reviews/{id}',[ReviewController::class, 'update']);
+        Route::delete('/reviews/{id}',[ReviewController::class, 'destroy']);
     });
 
 

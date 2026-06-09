@@ -73,49 +73,50 @@ class ProfileController extends BaseApiController
     /**
      * Customer Dashboard
      */
-public function dashboard(Request $request)
-{
-    $user = $request->user();
+    public function dashboard(Request $request)
+    {
+        $user = $request->user();
 
-    $stats = Order::where(
+        $totalOrders = Order::where(
+            'user_id',
+            $user->id
+        )->count();
+
+        $pendingOrders = Order::where(
             'user_id',
             $user->id
         )
-        ->selectRaw('
-            COUNT(*) as total_orders,
+        ->where(
+            'order_status',
+            'pending'
+        )
+        ->count();
 
-            SUM(
-                CASE
-                    WHEN order_status = "pending"
-                    THEN 1
-                    ELSE 0
-                END
-            ) as pending_orders,
+        $completedOrders = Order::where(
+            'user_id',
+            $user->id
+        )
+        ->where(
+            'order_status',
+            'delivered'
+        )
+        ->count();
 
-            SUM(
-                CASE
-                    WHEN order_status = "delivered"
-                    THEN 1
-                    ELSE 0
-                END
-            ) as completed_orders,
+        $cancelledOrders = Order::where(
+            'user_id',
+            $user->id
+        )
+        ->where(
+            'order_status',
+            'cancelled'
+        )
+        ->count();
 
-            SUM(
-                CASE
-                    WHEN order_status = "cancelled"
-                    THEN 1
-                    ELSE 0
-                END
-            ) as cancelled_orders
-        ')
-        ->first();
-
-return $this->sendResponse([
-    'total_orders' => (int) $stats->total_orders,
-    'pending_orders' => (int) $stats->pending_orders,
-    'completed_orders' => (int) $stats->completed_orders,
-    'cancelled_orders' => (int) $stats->cancelled_orders,
-], 'Dashboard Data Fetched Successfully');
+        return $this->sendResponse([
+            'total_orders'      => $totalOrders,
+            'pending_orders'    => $pendingOrders,
+            'completed_orders'  => $completedOrders,
+            'cancelled_orders'  => $cancelledOrders,
+        ], 'Dashboard Data Fetched Successfully');
+    }
 }
-}
-
