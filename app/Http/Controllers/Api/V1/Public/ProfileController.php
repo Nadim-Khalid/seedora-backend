@@ -110,9 +110,12 @@ public function dashboard(Request $request)
         ')
         ->first();
 
-    return $this->sendResponse(
-        $stats,
-        'Dashboard Data Fetched Successfully'
-    );
+return $this->sendResponse([
+    'total_orders' => (int) $stats->total_orders,
+    'pending_orders' => (int) $stats->pending_orders,
+    'completed_orders' => (int) $stats->completed_orders,
+    'cancelled_orders' => (int) $stats->cancelled_orders,
+], 'Dashboard Data Fetched Successfully');
 }
 }
+

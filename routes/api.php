@@ -5,13 +5,21 @@ use App\Http\Controllers\Api\V1\Admin\DashboardController;
 use App\Http\Controllers\Api\V1\AdminVendorController;
 use App\Http\Controllers\Api\V1\Auth\AuthController;
 use App\Http\Controllers\Api\V1\Cart\CartController;
-use App\Http\Controllers\Api\V1\Public\ProfileController;
+use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\TestController;
 use App\Http\Controllers\Api\V1\Vendor\ProductController;
 use App\Models\Order;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Testing\Concerns\TestCaches;
 use App\Http\Controllers\Api\V1\Vendor\VendorController;
+
+
+
+
+
+
+
+
 
 Route::prefix('v1')->group(function ()
 {
